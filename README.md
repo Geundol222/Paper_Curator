@@ -2,7 +2,7 @@
 
 매일 Arxiv 최신 논문을 자동 수집하고, Gemini로 분석한 뒤 Notion 데이터베이스에 저장하는 자동화 파이프라인.
 
-RAG / Fine-tuning / Hallucination / Prompt Engineering / Context Engineering 분야 논문을 추적하는 개인 연구 워크플로우로, 3개월 이상 매일 운영 중.
+RAG / Fine-tuning / Hallucination / Prompt Engineering / Context Engineering 분야 논문을 추적하는 개인 연구 워크플로우로, 3개월 매일 운영.
 
 ![Notion에 자동으로 쌓이는 논문 목록](assets/스크린샷%202026-05-04%20170648.png)
 
