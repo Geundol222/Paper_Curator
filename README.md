@@ -1,26 +1,24 @@
 # Arxiv Paper Auto-Sync
 
-매일 자동으로 Arxiv 최신 논문을 수집하고, Gemini로 분석한 뒤 Notion 데이터베이스에 저장하는 자동화 파이프라인입니다.
+매일 Arxiv 최신 논문을 자동 수집하고, Gemini로 분석한 뒤 Notion 데이터베이스에 저장하는 자동화 파이프라인.
 
-RAG / Fine-tuning / Hallucination / Prompt Engineering / Context Engineering 분야의 논문을 추적하는 개인 연구 워크플로우로 시작해, 3개월 이상 매일 운영 중입니다.
+RAG / Fine-tuning / Hallucination / Prompt Engineering / Context Engineering 분야 논문을 추적하는 개인 연구 워크플로우로, 3개월 이상 매일 운영 중.
 
 ![Notion에 자동으로 쌓이는 논문 목록](assets/스크린샷%202026-05-04%20170648.png)
 
 ---
 
-## 왜 만들었나
+## 목적
 
-논문을 꾸준히 읽고 싶었지만, 매번 Arxiv에서 직접 찾고 → 읽을만한지 판단하고 → Notion에 정리하는 과정이 번거로웠습니다.
-
-이 과정 전체를 자동화하되, 단순 크롤링이 아니라 **"읽을 가치가 있는 논문"만 골라 깊이 있게 분석**하는 것이 목표였습니다.
+논문을 Arxiv에서 직접 찾고 → 읽을 가치를 판단하고 → Notion에 정리하는 과정 전체를 자동화함. 단순 크롤링이 아니라, **읽을 가치가 있는 논문만 선별해 심층 분석**하는 것이 목표.
 
 ---
 
 ## 아키텍처
 
-LLM은 확률적이고, 비즈니스 로직은 결정론적이어야 합니다. 둘을 같은 레이어에 두면 오류가 복합적으로 쌓입니다. (90% 정확도 × 5단계 = 59% 성공률)
+LLM은 확률적이고 비즈니스 로직은 결정론적이어야 함. 둘을 같은 레이어에 두면 오류가 복합적으로 누적됨 (90% 정확도 × 5단계 = 59% 성공률).
 
-이를 해결하기 위해 **3개 레이어**로 역할을 분리했습니다:
+이를 분리하기 위해 역할을 **3개 레이어(3-Layer Architecture)**로 나눔.
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -37,11 +35,11 @@ LLM은 확률적이고, 비즈니스 로직은 결정론적이어야 합니다. 
 └─────────────────────────────────────────────────────────┘
 ```
 
-**핵심 원칙:** AI는 의사결정만 담당하고, 실제 작업은 테스트 가능한 코드가 처리합니다.
+**핵심 원칙:** AI는 의사결정만 담당하고, 실제 작업은 테스트 가능한 코드가 처리함.
 
 ---
 
-## 파이프라인 흐름
+## 파이프라인
 
 ```
 Arxiv API
@@ -86,7 +84,7 @@ Windows 알림                 ← 업로드 완료 시 Toast 알림
 
 ## Notion 출력 구조
 
-각 논문은 다음 섹션으로 구성된 Notion 페이지로 저장됩니다:
+각 논문은 다음 섹션으로 구성된 Notion 페이지로 저장됨.
 
 | 섹션 | 내용 |
 |------|------|
@@ -126,7 +124,7 @@ Windows 알림                 ← 업로드 완료 시 Toast 알림
 
 ---
 
-## 설치 및 설정
+## 설치
 
 ### 1. 의존성 설치
 
@@ -140,7 +138,7 @@ pip install requests python-dotenv google-generativeai google-genai
 cp .env.example .env
 ```
 
-`.env` 파일에 값 입력:
+`.env` 파일에 값 입력.
 
 ```env
 NOTION_TOKEN=your_notion_integration_token
@@ -148,12 +146,13 @@ NOTION_DATABASE_ID=your_database_id
 GEMINI_API_KEY=your_gemini_api_key
 ```
 
-**Notion 설정:**
+**Notion 설정**
+
 1. [notion.so/my-integrations](https://www.notion.so/my-integrations) → New integration 생성
 2. 논문을 저장할 데이터베이스에 Integration 연결 (DB 우측 상단 `...` → Connections)
 3. DB URL에서 32자리 ID 추출: `notion.so/workspace/[DATABASE_ID]?v=...`
 
-**Notion 데이터베이스 필수 속성:**
+**Notion 데이터베이스 필수 속성**
 
 | 속성명 | 타입 |
 |--------|------|
@@ -162,7 +161,8 @@ GEMINI_API_KEY=your_gemini_api_key
 | URL | URL |
 | 날짜 | Date |
 
-**Gemini API Key:**
+**Gemini API Key**
+
 [aistudio.google.com](https://aistudio.google.com/app/apikey) → Create API Key
 
 ### 3. 수동 실행 테스트
@@ -175,13 +175,15 @@ python execution/auto_sync_papers.py
 
 ### 4. 자동 실행 설정
 
-**방법 A — 로그인 시 자동 실행 (권장):**
+**방법 A — 로그인 시 자동 실행 (권장)**
+
 ```bash
 # 관리자 권한으로 실행
 setup_autostart.bat
 ```
 
-**방법 B — 매일 09:00 실행:**
+**방법 B — 매일 09:00 실행**
+
 ```bash
 # 관리자 권한으로 실행
 setup_task_scheduler.bat
@@ -214,14 +216,14 @@ python execution/paper_analyzer.py \
 
 ## Self-Annealing
 
-시스템이 실패하면 단순히 재시도하는 것이 아니라 **스스로 개선**합니다:
+시스템은 실패 시 단순 재시도가 아니라 **스스로 개선**함.
 
 1. 에러 메시지와 스택 트레이스 분석
 2. 스크립트 수정 및 재테스트
 3. `directives/notion_paper_sync.md`에 학습 내용 기록
 4. 다음 실행부터 개선된 로직 적용
 
-예시: Gemini API rate limit(RPD 20) 발견 → 배치 검증 횟수를 15회로 제한, 요청 간 13초 간격 추가 → 디렉티브에 제약 조건 명시
+예시: Gemini API rate limit(RPD 20) 발견 → 배치 검증 횟수를 15회로 제한, 요청 간 13초 간격 추가 → 디렉티브에 제약 조건 명시.
 
 ---
 
